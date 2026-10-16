@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOVE.exe | ครบรอบ 3 ปี</title>
+
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #090d14;
+    color: #d6e2f0;
+    font-family: Tahoma, sans-serif;
+  }
+
+  .terminal {
+    width: 100%;
+    max-width: 740px;
+    overflow: hidden;
+    background: #101722;
+    border: 1px solid #2c3c4e;
+    border-radius: 14px;
+    box-shadow: 0 0 45px #76edb522;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    background: #1a2533;
+    border-bottom: 1px solid #2c3c4e;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #526174;
+  }
+
+  .dot:nth-child(1) { background: #ff7185; }
+  .dot:nth-child(2) { background: #f7c96c; }
+  .dot:nth-child(3) { background: #68d9a3; }
+
+  .title {
+    margin-left: 8px;
+    color: #a9bacd;
+    font-size: 13px;
+  }
+
+  main { padding: 25px; }
+
+  h1 {
+    margin: 0 0 8px;
+    color: #76edb5;
+    font-family: Consolas, monospace;
+    font-size: clamp(28px, 6vw, 38px);
+    text-shadow: 0 0 18px #76edb544;
+  }
+
+  .subtitle {
+    margin-bottom: 24px;
+    color: #91a2b7;
+    font-size: 14px;
+  }
+
+  #console {
+    min-height: 220px;
+    color: #76edb5;
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
+    line-height: 2;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .pink { color: #ff9dc6; }
+
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: #76edb5;
+    animation: blink 1s steps(2) infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  button {
+    padding: 12px 15px;
+    border: 1px solid #4cbd91;
+    border-radius: 7px;
+    background: #16382f;
+    color: #a1f5cf;
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  button:hover { background: #245343; }
+
+  button:disabled {
+    opacity: .5;
+    cursor: default;
+  }
+
+  #letter {
+    display: none;
+    margin-top: 24px;
+    padding: 20px;
+    border: 1px solid #70435b;
+    border-radius: 9px;
+    background: #251923;
+    color: #f5dce8;
+    line-height: 2;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-family: Tahoma, sans-serif;
+    font-size: 15px;
+  }
+
+  #letter h2 {
+    margin-top: 0;
+    color: #ff9dc6;
+    font-size: 20px;
+  }
+
+  .footer {
+    margin-top: 24px;
+    color: #718399;
+    font-size: 12px;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    main { padding: 18px; }
+    .actions button { width: 100%; }
+  }
+</style>
+</head>
+
+<body>
+<div class="terminal">
+
+  <div class="topbar">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="title">LOVE.exe — ระบบครบรอบของเรา</span>
+  </div>
+
+  <main>
+    <h1>LOVE.exe <span class="pink">♥</span></h1>
+
+    <div class="subtitle">
+      ระบบความสัมพันธ์ รุ่น 3.0.0
+    </div>
+
+    <div id="console"></div>
+    <span class="cursor" id="cursor"></span>
+
+    <div class="actions">
+      <button id="boot" onclick="startSystem()">
+        ▶ เริ่มต้นระบบความรัก
+      </button>
+
+      <button id="open" onclick="openLetter()" disabled>
+        ♥ เปิดข้อความลับ
+      </button>
+    </div>
+
+    <div id="letter">
+      <h2>ถึงคุณแฟนสุดที่รักกของเค้า ❤️</h2>
+      <div id="letterText"></div>
+    </div>
+
+    <div class="footer">
+      ออกแบบด้วยความรัก พัฒนาด้วยความทรงจำ
+      <br>ผู้พัฒนา: ปลาสองตัวว
+    </div>
+  </main>
+</div>
+
+<script>
+
+  
+  // แก้ไขข้อมูลตรงนี้ให้เป็นของคุณ
+  const herName = "คุณแฟนสุดที่รักก";
+  const yourName = "ปลาสองตัวว";
+
+  const bootLines = [
+    "> กำลังเริ่มต้นระบบ LOVE.exe...",
+    "> กำลังโหลดความทรงจำปีที่ 1... สำเร็จ",
+    "> กำลังโหลดความทรงจำปีที่ 2... สำเร็จ",
+    "> กำลังโหลดความทรงจำปีที่ 3... สำเร็จ",
+    "> กำลังวิเคราะห์ประวัติความสัมพันธ์...",
+    "> ข้อผิดพลาด: พบความทรงจำดี ๆ มากเกินกว่าจะนับ",
+    "> กำลังตรวจสอบการเชื่อมต่อระยะไกล...",
+    "> ระยะห่างทางกายภาพ: ไม่เป็นศูนย์",
+    "> สัญญาณความคิดถึง: ทำงานตลอดเวลา",
+    "> ตรวจสอบความซื่อสัตย์... ผ่าน",
+    "> สถานะความรัก: ยังคงทำงานปกติ",
+    "> แผนการในอนาคต: จะยังคงเลือกเธอต่อไป",
+    "",
+    "> ระบบทุกส่วนพร้อมใช้งาน",
+    "> เริ่มต้นโปรโตคอลวันครบรอบสำเร็จ <3"
+  ];
+
+  const loveLetter = `สุขสันต์วันครบรอบ 3 ปีนะ ${herName} ❤️
+
+เผลอแป๊บเดียว เราก็เดินทางมาด้วยกันตั้งสามปีแล้วนะ
+
+ถ้ามีใครเคยบอกเค้าว่า คนคนหนึ่งจะมีความหมายกับเราได้มากขนาดนี้ เค้าคงไม่เข้าใจทั้งหมดหรอก จนกระทั่งได้มาเจอเธอ
+
+ในฐานะนักศึกษา IoT เค้าเรียนรู้เรื่องการเชื่อมต่อ
+การส่งข้อมูล และการทำให้อุปกรณ์ที่อยู่ห่างกัน
+ยังสามารถสื่อสารถึงกันได้
+
+แต่เทอรู้ไหมว่า การเชื่อมต่อที่เค้าชอบที่สุด
+ไม่ใช่การเชื่อมต่อระหว่างอุปกรณ์เลยนะ
+แต่เป็นการเชื่อมต่อที่เค้าได้มีเทออยู่ในชีวิตต่างหาก
+
+ถึงวันนี้เราจะไม่ได้อยู่ด้วยกัน
+ไม่ได้เจอกันในวันสำคัญแบบที่เค้าอยากให้เป็น
+แต่เค้าอยากให้เทอรู้ว่า
+ระยะทางไม่ได้ทำให้เทอมีความสำคัญกับเค้าน้อยลงเลย
+
+ขอบคุณที่เข้ามาเป็นส่วนหนึ่งในชีวิตเค้า
+ขอบคุณทุกความทรงจำ ทุกเสียงหัวเราะ
+และทุกช่วงเวลาที่ทำให้เค้ามีความสุข
+เพียงเพราะช่วงเวลานั้นมีเทออยู่ด้วย
+
+ถ้าย้อนเวลากลับไปเลือกได้อีกครั้ง
+ทั้งที่รู้ว่าระหว่างทางเราจะต้องเจออะไรบ้าง
+เค้าก็ยังอยากเลือกเทออยู่ดี
+
+เค้าไม่รู้หรอกว่าอนาคตจะเป็นยังไงทุกอย่าง
+แต่เค้าอยากให้เราค่อย ๆ เติบโตไปด้วยกัน
+เรียนรู้กันมากขึ้น เข้าใจกันมากขึ้น
+และจับมือกันผ่านวันที่ยากลำบากไปให้ได้
+
+เค้ารอวันที่เราจะได้ฉลองวันครบรอบ
+โดยไม่ต้องมองกันผ่านหน้าจอ
+รอวันที่จะได้อยู่ข้าง ๆ เทอจริง ๆ
+และสร้างความทรงจำใหม่ด้วยกันอีกเยอะ ๆ
+
+สามปีที่ผ่านมาเป็นความทรงจำที่มีค่ามากสำหรับเค้า
+และเค้าก็หวังว่าเราจะมีปีที่ 4 ปีที่ 5
+และปีต่อ ๆ ไปด้วยกันนะ
+
+สุขสันต์วันครบรอบ 3 ปีนะควัฟฟฟ •^•
+
+ขอบคุณที่เป็นเทอ
+และขอบคุณที่ให้เค้าได้รักเทอ ❤️😽
+
+รักเทอออน้าาาาา😽😽
+
+${yourName}`;
+
+  const consoleEl = document.getElementById("console");
+  const bootButton = document.getElementById("boot");
+  const letterButton = document.getElementById("open");
+  const cursor = document.getElementById("cursor");
+
+  let started = false;
+  let letterOpened = false;
+
+  const sleep = ms =>
+    new Promise(resolve => setTimeout(resolve, ms));
+
+  async function typeText(element, text, speed = 25) {
+    for (const char of text) {
+      element.textContent += char;
+      await sleep(speed);
+    }
+  }
+
+  async function startSystem() {
+    if (started) return;
+    started = true;
+    bootButton.disabled = true;
+
+    for (const line of bootLines) {
+      await typeText(consoleEl, line + "\n", 18);
+      await sleep(180);
+    }
+
+    const finalLine = document.createElement("span");
+    finalLine.className = "pink";
+    finalLine.textContent =
+      `\n> สุขสันต์วันครบรอบนะ ${herName} ♥`;
+
+    consoleEl.appendChild(finalLine);
+
+    letterButton.disabled = false;
+    bootButton.textContent = "✓ เริ่มต้นระบบสำเร็จ";
+  }
+
+  async function openLetter() {
+    if (letterButton.disabled || letterOpened) return;
+    letterOpened = true;
+
+    const box = document.getElementById("letter");
+    const text = document.getElementById("letterText");
+
+    box.style.display = "block";
+    cursor.style.display = "none";
+    letterButton.disabled = true;
+
+    box.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+    await typeText(text, loveLetter, 22);
+  }
+</script>
+</body>
+</html>
